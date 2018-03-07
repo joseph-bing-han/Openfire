@@ -73,7 +73,7 @@
     </provider>
     <jdbcUserProvider>
         <!--users就是将要集成的用户表-->
-        <loadUserSQL>SELECT name,email FROM users WHERE account_id=?</loadUserSQL>
+        <loadUserSQL>SELECT CONCAT_WS(' ',first_name,last_name) AS name,email FROM users WHERE account_id=?</loadUserSQL>
         <userCountSQL>SELECT COUNT(*) FROM users WHERE deleted_at IS NULL</userCountSQL>
         <allUsersSQL>SELECT account_id FROM users WHERE deleted_at IS NULL</allUsersSQL>
         <searchSQL>SELECT account_id FROM users WHERE deleted_at IS NULL AND </searchSQL>
