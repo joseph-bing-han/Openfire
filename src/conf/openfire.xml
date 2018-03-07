@@ -55,4 +55,56 @@
         </management>
     </stream>
 
+    <jdbcProvider>
+    	<driver>com.mysql.jdbc.Driver</driver>
+    	<connectionString>jdbc:mysql://docker-lamp:3306/arrowtown?user=root&amp;password=111111</connectionString>
+        <!--不同数据库，其驱动类和连接字符串是不同的,同时**确保\Openfire\lib路径下有该驱动类的jar包**，如果没有需要手动放入-->
+    </jdbcProvider>
+    <provider>
+        <auth>
+            <className>org.jivesoftware.openfire.auth.JDBCAuthProvider</className>
+        </auth>
+        <user>
+            <className>org.jivesoftware.openfire.user.JDBCUserProvider</className>
+        </user>
+        <admin>
+            <className>org.jivesoftware.openfire.admin.JDBCAdminProvider</className>
+        </admin>
+    </provider>
+    <jdbcUserProvider>
+        <!--users就是将要集成的用户表-->
+        <loadUserSQL>SELECT name,email FROM users WHERE account_id=?</loadUserSQL>
+        <userCountSQL>SELECT COUNT(*) FROM users WHERE deleted_at IS NULL</userCountSQL>
+        <allUsersSQL>SELECT account_id FROM users WHERE deleted_at IS NULL</allUsersSQL>
+        <searchSQL>SELECT account_id FROM users WHERE deleted_at IS NULL AND </searchSQL>
+        <!--
+            account_id是登录openfire和进行信息通信的账号
+            name和email应该是进行聊天时可以显示的昵称和电子邮件。如果不是真正需要，只要和上面的sql语句对应上就可以了
+        -->
+        <usernameField>account_id</usernameField>
+        <nameField>name</nameField>
+        <emailField>email</emailField>
+    </jdbcUserProvider>
+    <jdbcAuthProvider>
+        <!--
+            pwd是blog_user表中保存密码的字段，须根据自身的表填写
+            passwordType需要根据blog_user的加密类型进行选值，有如下几种plain、md5、sha1、sha256、sha512
+        -->
+        <passwordSQL>SELECT password FROM users WHERE account_id=?</passwordSQL>
+        <passwordType>plain</passwordType>
+    </jdbcAuthProvider>
+    <jdbcAdminProvider>
+        <getAdminsSQL>SELECT account_id FROM users WHERE is_admin='1'</getAdminsSQL>
+    </jdbcAdminProvider>
+    <admin>
+        <!--
+            设置授权的用户，可以登录到openfire的后台。外部用户表要存在这个用户
+            如users中存在了account_id字段为A0000001的一条记录
+        -->
+        <authorizedUsernames>A0000001</authorizedUsernames>
+        <jdbcAdminProvider> 
+                <getAdminsSQL>SELECT account_id FROM users WHERE is_admin='1'</getAdminsSQL> 
+        </jdbcAdminProvider>
+    </admin>
+
 </jive>

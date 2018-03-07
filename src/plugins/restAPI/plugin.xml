@@ -2,11 +2,11 @@
 
 <plugin>
     <class>org.jivesoftware.openfire.plugin.rest.RESTServicePlugin</class>
-    <name>REST API</name>
+    <name>REST API for Xebni</name>
     <description>Allows administration over a RESTful API.</description>
-    <author>Roman Soldatow</author>
-    <version>1.2.6</version>
-    <date>05/31/2017</date>
+    <author>Roman Soldatow, Joseph Han</author>
+    <version>1.2.7</version>
+    <date>03/07/2018</date>
     <minServerVersion>4.1.0</minServerVersion>
     <adminconsole>
         <tab id="tab-server">
